@@ -45,6 +45,9 @@ struct BookwormView: View {
             .sheet(isPresented: $showingAddScreen) {
                 AddBookView()
             }
+            .navigationDestination(for: Book.self) { book in
+                DetailView(book: book)
+            }
         }
     }
 }
