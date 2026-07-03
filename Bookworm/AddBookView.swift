@@ -19,6 +19,13 @@ struct AddBookView: View {
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
+    var isValidForm: Bool {
+        let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedAuthor = author.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return cleanedTitle.isEmpty == false && cleanedAuthor.isEmpty == false
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -44,6 +51,7 @@ struct AddBookView: View {
                         modelContext.insert(newBook)
                         dismiss()
                     }
+                    .disabled(isValidForm == false)
                 }
             }
             .navigationTitle("Add Book")
