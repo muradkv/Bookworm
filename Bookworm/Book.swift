@@ -5,6 +5,7 @@
 //  Created by murad on 01.07.2026.
 //
 
+import Foundation
 import SwiftData
 
 @Model
@@ -14,12 +15,14 @@ class Book {
     var genre: String
     var review: String
     var rating: Int
+    var date: Date
     
-    init(title: String, author: String, genre: String, review: String, rating: Int) {
+    init(title: String, author: String, genre: String, review: String, rating: Int, date: Date = .now) {
         self.title = title
         self.author = author
         self.genre = genre
         self.review = review
         self.rating = rating
+        self.date = date
     }
 }
