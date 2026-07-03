@@ -49,6 +49,7 @@ struct AddBookView: View {
                     Button("Save") {
                         let newBook = Book(title: title, author: author, genre: genre, review: review, rating: rating)
                         modelContext.insert(newBook)
+                        try? modelContext.save()
                         dismiss()
                     }
                     .disabled(isValidForm == false)
