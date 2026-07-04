@@ -11,48 +11,33 @@ struct AddBookView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
-    @State private var title = ""
-    @State private var author = ""
-    @State private var rating = 3
-    @State private var genre = "Fantasy"
-    @State private var review = ""
-    
-    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-    
-    var isValidForm: Bool {
-        let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        let cleanedAuthor = author.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        return cleanedTitle.isEmpty == false && cleanedAuthor.isEmpty == false
-    }
+    @State private var viewModel = AddBookViewModel()
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Name of book", text: $title)
-                    TextField("Author's name", text: $author)
+                    TextField("Name of book", text: $viewModel.title)
+                    TextField("Author's name", text: $viewModel.author)
                     
-                    Picker("Genre", selection: $genre) {
-                        ForEach(genres, id: \.self) {
+                    Picker("Genre", selection: $viewModel.genre) {
+                        ForEach(viewModel.genres, id: \.self) {
                             Text($0)
                         }
                     }
                 }
                 
                 Section("Write a review") {
-                    TextEditor(text: $review)
-                    RatingView(rating: $rating)
+                    TextEditor(text: $viewModel.review)
+                    RatingView(rating: $viewModel.rating)
                 }
                 
                 Section {
                     Button("Save") {
-                        let newBook = Book(title: title, author: author, genre: genre, review: review, rating: rating)
-                        modelContext.insert(newBook)
-                        try? modelContext.save()
+                        viewModel.saveBook(into: modelContext)
                         dismiss()
                     }
-                    .disabled(isValidForm == false)
+                    .disabled(viewModel.isValidForm == false)
                 }
             }
             .navigationTitle("Add Book")
