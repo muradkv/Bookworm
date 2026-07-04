@@ -23,18 +23,7 @@ struct BookwormView: View {
             List {
                 ForEach(books) { book in
                     NavigationLink(value: book) {
-                        HStack {
-                            EmojiRatingView(rating: book.rating)
-                                .font(.largeTitle)
-                            
-                            VStack(alignment: .leading) {
-                                Text(book.title)
-                                    .font(.headline)
-                                    .foregroundStyle(book.rating == 1 ? Color.red : .primary)
-                                Text(book.author)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
+                        BookRowView(book: book)
                     }
                 }
                 .onDelete(perform: deleteBooks)
