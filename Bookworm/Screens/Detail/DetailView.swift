@@ -11,18 +11,21 @@ import SwiftData
 struct DetailView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-    @State private var showingDeleteAlert = false
     
-    let book: Book
+    @State private var viewModel: DetailViewModel
+    
+    init(book: Book) {
+        _viewModel = State(wrappedValue: DetailViewModel(book: book))
+    }
     
     var body: some View {
         ScrollView {
             ZStack(alignment: .bottomTrailing) {
-                Image(book.genre)
+                Image(viewModel.book.genre)
                     .resizable()
                     .scaledToFit()
                 
-                Text(book.genre.uppercased())
+                Text(viewModel.book.genre.uppercased())
                     .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
@@ -32,38 +35,36 @@ struct DetailView: View {
                     .offset(x: -5, y: -5)
             }
             
-            Text(book.author)
+            Text(viewModel.book.author)
                 .font(.title)
                 .foregroundStyle(.secondary)
 
-            Text(book.review)
+            Text(viewModel.book.review)
                 .padding()
             
-            Text(book.date.formatted(date: .long, time: .omitted))
+            Text(viewModel.book.date.formatted(date: .long, time: .omitted))
                 .padding()
 
-            RatingView(rating: .constant(book.rating))
+            RatingView(rating: .constant(viewModel.book.rating))
                 .font(.largeTitle)
         }
-        .navigationTitle(book.title)
+        .navigationTitle(viewModel.book.title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollBounceBehavior(.basedOnSize)
-        .alert("Delete book", isPresented: $showingDeleteAlert) {
-            Button("Delete", role: .destructive, action: deleteBook)
+        .alert("Delete book", isPresented: $viewModel.showingDeleteAlert) {
+            Button("Delete", role: .destructive) {
+                viewModel.deleteBook(into: modelContext)
+                dismiss()
+            }
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("Are you sure?")
         }
         .toolbar {
             Button("Delete this book", systemImage: "trash") {
-                showingDeleteAlert = true
+                viewModel.showingDeleteAlert = true
             }
         }
-    }
-    
-    private func deleteBook() {
-        modelContext.delete(book)
-        dismiss()
     }
 }
 
