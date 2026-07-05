@@ -16,7 +16,7 @@ struct BookwormView: View {
         SortDescriptor(\Book.author)
     ]) var books: [Book]
     
-    @State private var showingAddScreen = false
+    @State private var viewModel = BookwormViewModel()
     
     var body: some View {
         NavigationStack {
@@ -26,13 +26,15 @@ struct BookwormView: View {
                         BookRowView(book: book)
                     }
                 }
-                .onDelete(perform: deleteBooks)
+                .onDelete { offsets in
+                    viewModel.deleteBooks(at: offsets, from: books, into: modelContext)
+                }
             }
             .navigationTitle("Bookworm")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add Book", systemImage: "plus") {
-                        showingAddScreen.toggle()
+                        viewModel.showingAddScreen.toggle()
                     }
                 }
                 
@@ -40,20 +42,12 @@ struct BookwormView: View {
                     EditButton()
                 }
             }
-            .sheet(isPresented: $showingAddScreen) {
+            .sheet(isPresented: $viewModel.showingAddScreen) {
                 AddBookView()
             }
             .navigationDestination(for: Book.self) { book in
                 DetailView(book: book)
             }
-        }
-    }
-    
-    private func deleteBooks(at offsets: IndexSet) {
-        for offset in offsets {
-            let book = books[offset]
-            
-            modelContext.delete(book)
         }
     }
 }
