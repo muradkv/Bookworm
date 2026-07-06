@@ -21,11 +21,11 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             ZStack(alignment: .bottomTrailing) {
-                Image(viewModel.book.genre)
+                Image(viewModel.book.genre.displayName)
                     .resizable()
                     .scaledToFit()
                 
-                Text(viewModel.book.genre.uppercased())
+                Text(viewModel.book.genre.displayName.uppercased())
                     .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
@@ -72,7 +72,7 @@ struct DetailView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Book.self, configurations: config)
-        let example = Book(title: "Test Book", author: "Test Author", genre: "Fantasy", review: "This was a great book; I really enjoyed it.", rating: 4)
+        let example = Book(title: "Test Book", author: "Test Author", genre: Genre.fantasy, review: "This was a great book; I really enjoyed it.", rating: 4)
         
         return NavigationStack {
             DetailView(book: example)

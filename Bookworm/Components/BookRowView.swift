@@ -33,7 +33,7 @@ struct BookRowView: View {
 
 #Preview {
     let container = try! ModelContainer(for: Book.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-    let mockBook = Book(title: "Test Book", author: "Test Author", genre: "Fantasy", review: "Great!", rating: 1)
+    let mockBook = Book(title: "Test Book", author: "Test Author", genre: Genre.fantasy, review: "Great!", rating: 1)
     container.mainContext.insert(mockBook)
     
     return BookRowView(book: mockBook)

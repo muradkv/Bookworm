@@ -21,8 +21,8 @@ struct AddBookView: View {
                     TextField("Author's name", text: $viewModel.author)
                     
                     Picker("Genre", selection: $viewModel.genre) {
-                        ForEach(viewModel.genres, id: \.self) {
-                            Text($0)
+                        ForEach(Genre.allCases, id: \.self) {
+                            Text($0.displayName)
                         }
                     }
                 }
@@ -35,6 +35,7 @@ struct AddBookView: View {
                 Section {
                     Button("Save") {
                         viewModel.saveBook(into: modelContext)
+                        print(viewModel.genre)
                         dismiss()
                     }
                     .disabled(viewModel.isValidForm == false)

@@ -13,11 +13,9 @@ final class AddBookViewModel {
     var title = ""
     var author = ""
     var rating = 3
-    var genre = "Fantasy"
+    var genre = Genre.fantasy
     var review = ""
-    
-    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-    
+        
     var isValidForm: Bool {
         let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanedAuthor = author.trimmingCharacters(in: .whitespacesAndNewlines)
