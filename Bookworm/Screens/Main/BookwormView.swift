@@ -20,14 +20,20 @@ struct BookwormView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(books) { book in
-                    NavigationLink(value: book) {
-                        BookRowView(book: book)
+            Group {
+                if books.isEmpty {
+                    ContentUnavailableView("No Books Yet", systemImage: "book.closed", description: Text("Tap + to add your first book review."))
+                } else {
+                    List {
+                        ForEach(books) { book in
+                            NavigationLink(value: book) {
+                                BookRowView(book: book)
+                            }
+                        }
+                        .onDelete { offsets in
+                            viewModel.deleteBooks(at: offsets, from: books, into: modelContext)
+                        }
                     }
-                }
-                .onDelete { offsets in
-                    viewModel.deleteBooks(at: offsets, from: books, into: modelContext)
                 }
             }
             .navigationTitle("Bookworm")
