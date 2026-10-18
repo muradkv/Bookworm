@@ -22,23 +22,29 @@ Bookworm enables users to keep a persistent personal library, evaluate books usi
 
 * **Persistent Local Storage:** Native SwiftData model container integrating lightweight persistence with zero setup boilerplate.
 * **Custom Rating Subsystem:** Reusable interactable rating control used for inputting user evaluations and read-only displays.
+* **VoiceOver Accessibility:** Grouped adjustable star rating control allowing visually impaired users to hear current ratings and adjust values smoothly with vertical swipes.
 * **Type-Safe Domain Genres:** Enforced data safety across book genres leveraging enum structures mapped to asset rendering.
 * **Empty State Handling:** Graceful fallback layouts driven by iOS 18+ `ContentUnavailableView` when no records are available.
 * **Form Validation:** Input sanitization ensuring blank or whitespace-only book titles and authors cannot be saved.
 
 ## About the Project & Challenge
 
-This application was originally built to fulfill **Project 11 (Days 53-56)** of the SwiftUI learning path by Paul Hudson (Hacking with Swift). The core educational goal was to master `@Model`, `@Query`, `@Environment(\.modelContext)`, and local persistence using Apple's SwiftData framework.
+This application was originally built to fulfill **Project 11 (Days 53-56)** of the SwiftUI learning path by Paul Hudson (Hacking with Swift), and later enhanced with the **Project 15 (Day 75 — Accessibility)** challenge. The core educational goal was to master `@Model`, `@Query`, `@Environment(\.modelContext)`, and local persistence using Apple's SwiftData framework.
 
 Beyond the baseline curriculum, the entire codebase underwent a comprehensive refactoring into a production-ready **MVVM** architecture, completely decoupling business logic and mutations from the rendering layer. Key concepts and best practices implemented include:
 
 * **SwiftData & MVVM Decoupling:** Solved the framework coupling issue of `@Query` inside ViewModels by leveraging dependency injection, passing reactive collections into isolated ViewModels strictly for mutations.
 * **Explicit Dependency Injection:** Custom `init` state wrapping using `State(wrappedValue:)` to safely pass model instances into screen-level ViewModels upon dynamic navigation transitions.
 * **View Composition:** Extracted dense list layouts into atomic `BookRowView` units with computed styling properties to enforce the Single Responsibility Principle.
+* **Adjustable Accessibility Control (Day 75 — Project 15 Challenge):** Transformed `RatingView` from five separate star buttons into a unified VoiceOver control using `.accessibilityElement()`, `.accessibilityValue()`, and `.accessibilityAdjustableAction()`, complete with a smart fallback label when no visible title is provided.
 
 🔗 **[Full project description here](https://www.hackingwithswift.com/100/swiftui/53)**
+🔗 **[Accessibility challenge (Day 75)](https://www.hackingwithswift.com/100/swiftui/75)**
 
 ## Project Versioning & Changelog
+
+* **v1.3.0 (VoiceOver Adjustable RatingView)** — `commit: b8a9704`  
+  Completed the Day 75 accessibility challenge. Grouped `RatingView` into a single adjustable accessibility element supporting vertical swipe increments/decrements and fallback VoiceOver labeling.
 
 * **v1.2.0 (MVVM & Type Safety Refactoring)** — `commit: f189343`
   Migrated all screens to isolated `@Observable` ViewModels. Replaced raw strings with a type-safe `Genre` enum, introduced `ContentUnavailableView` empty states, and restructured code into domain folders.
@@ -46,5 +52,5 @@ Beyond the baseline curriculum, the entire codebase underwent a comprehensive re
 * **v1.1.0 (Data Enhancements & Validation)** — `commit: a05ab84`
   Added creation timestamp rendering in `DetailView`, custom rating-based color formatting in list rows, form input validation, and manual `ModelContext` saving fixes for persistent storage stability.
 
-* **v1.0.0 (Functional MVP)** — `commit: 94b43d7`
+* **v1.0.0 (Functional MVP)** — `commit: 94456f2`
   Initial core release matching the course curriculum. Implemented SwiftData persistence with `@Model class Book`, custom interactive `RatingView`, list sorting, deletion, and basic detail navigation.
